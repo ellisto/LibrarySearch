@@ -1,11 +1,9 @@
-﻿param(
-        [string]$isbn="9780143038276",
-        [string]$library="Silver Spring")
+﻿param( [string]$isbn="9780143038276",
+    [string]$library="Silver Spring")
 function CheckLibrary
 {    
-    param(
-            [string]$isbn="9780062351425",
-            [string]$library="Silver Spring")
+    param([string]$isbn="9780062351425",
+        [string]$library="Silver Spring")
 
     $LibraryIds = @{}
 
