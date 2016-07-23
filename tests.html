@@ -6,19 +6,23 @@
         <script src="librarysearch.js"></script>
         <script src="jquery-3.1.0.min.js"></script>
         <script>
+var found = false;
+
 function success(data){
-    $("#results").val(data)
+    res = $("#results");
+    res.val(res.val() + '\n' + data);
 }
 function error(data){
     alert("Error!" + data);
+    found = false;
 }
 
 $(document).ready(function(){
     $("#submit").click(function(){
         var isbn = $("#isbn").val();
         var library= "Silver Spring";
-
-        checkLibrary(isbn,library,success,error);
+        found = false;
+        checkLibraryForAllEditions(isbn,library,success,error);
     })
 });
         </script>
@@ -29,7 +33,8 @@ $(document).ready(function(){
                 <li>
                     <label>ISBN</label>
                     <input type="text" id="isbn" class="field-long" placeholder="ISBN" 
-                                                                      value="9780062351425"/>
+                                                                    value = "9780143038276"/>
+                    <!--value="9780062351425"/>-->
                 </li>
                 <li>
                     <input type="button" id="submit" value="Test"/>
