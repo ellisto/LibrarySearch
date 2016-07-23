@@ -17,13 +17,13 @@ function CheckLibrary
     if($trs[0].innerHTML -notmatch "Library"){return $false}
     for($i = 1; $i -lt $trs.length; $i++){
         $lname = $trs[$i].firstChild.innerHTML.Trim();
-        $id = ($trs[$i].lastChild.firstChild.id 
+        $id = ($trs[$i].lastChild.firstChild.id `
             | Select-String "availabilityDiv(.*)").Matches.Groups[1].Value
         $LibraryIds[$lname] = $id
     }
 
 
-    $availabilityJson = ($results.Scripts[-1].InnerHtml 
+    $availabilityJson = ($results.Scripts[-1].InnerHtml `
         | Select-String "(?smi)^parseDetailAvailabilityJSON\(({.*?})\);").Matches[0].Groups[1]
     $availabilityObj = ConvertFrom-Json $availabilityJson
 
@@ -46,21 +46,27 @@ function GetOtherEditions
     return $response.rsp.isbn
 }
 
+function CheckLibraryForAllEditions
+{ param([string] $isbn,
+    [string] $library)
+    if(CheckLibrary $isbn $library){
+        return $true
+    }else{
+        $otherEditions = GetOtherEditions $isbn
+        foreach($other in $otherEditions){
+            if(CheckLibrary $other $library)
+            {
+                echo "found alternate edition: $other"
+                return $true
+            }
+        }
+        return $false
+    }
+}
+
+
 ######################################
 ## main
 ######################################
 
-if(CheckLibrary $isbn){
-    return $true
-}else{
-    $otherEditions = GetOtherEditions $isbn
-    foreach($other in $otherEditions){
-        if(CheckLibrary $other)
-        {
-            echo "found alternate edition: $other"
-                return $true
-        }
-    }
-    return $false
-}
-
+CheckLibraryForAllEditions $isbn $library

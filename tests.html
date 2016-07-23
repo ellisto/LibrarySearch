@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+        <title>Test</title>
+        <script src="librarysearch.js"></script>
+        <script src="jquery-3.1.0.min.js"></script>
+        <script>
+function success(data){
+    $("#results").val(data)
+}
+function error(data){
+    alert("Error!" + data);
+}
+
+$(document).ready(function(){
+    $("#submit").click(function(){
+        var isbn = $("#isbn").val();
+        var library= "Silver Spring";
+
+        checkLibrary(isbn,library,success,error);
+    })
+});
+        </script>
+    </head>
+    <body>
+        <form>
+            <ul class="form-style-1">
+                <li>
+                    <label>ISBN</label>
+                    <input type="text" id="isbn" class="field-long" placeholder="ISBN" 
+                                                                      value="9780062351425"/>
+                </li>
+                <li>
+                    <input type="button" id="submit" value="Test"/>
+                </li>
+                <li>
+                    <label>Results</label>
+                    <textarea name="results" id="results" class="field-long field-textarea">
+                    </textarea>
+                </li>
+            </ul>
+        </form>
+    </body>
+</html>
